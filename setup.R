@@ -105,11 +105,12 @@ sticker <- sticker(p,
 				   filename = out_file )
 
 sticker
+ggsave(plot = sticker, filename = out_file, width = 600, height = 600, units = 'px', scale = 1.1, device = 'png')
 
 # Save a square version to use as an icon for Slack
-ggsave(filename = paste0(sub(' ', '', course), '-', sub(' ', '', semester), '-square.png'),
-	   plot = sticker,
-	   width = 50.8, height = 50.8, units = 'mm', bg = 'transparent', dpi = 300)
+# ggsave(filename = paste0(sub(' ', '', course), '-', sub(' ', '', semester), '-square.png'),
+# 	   plot = sticker,
+# 	   width = 50.8, height = 50.8, units = 'mm', bg = 'transparent', dpi = 300)
 
 # Copy file for use on the website
 file.copy(out_file,
