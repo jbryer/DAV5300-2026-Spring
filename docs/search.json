@@ -1,7 +1,7 @@
 [
   {
-    "objectID": "posts/2025-02-14-Welcome.html",
-    "href": "posts/2025-02-14-Welcome.html",
+    "objectID": "posts/2026-01-28-Welcome.html",
+    "href": "posts/2026-01-28-Welcome.html",
     "title": "Welcome to DAV 5300!",
     "section": "",
     "text": "meetup_image(out_file = 'welcome.png',\n             title = 'Welcome to DAV 5300!',\n             date = ' ')\n\nWelcome to DAV 5300! Couple of important notes as you get started:\n\nThe course syllabus located on this website here: https://spring2026.dav5300.net/course/syllabus.html We will post all course materials there. Canvas will be used primarily for submitting assignments. Please read the syllabus carefully! Send us any questions you may still have about the course.\nComplete this Google Form as soon as possible. We will use some of the data (in aggregate) in the meetup.\nOnce you go through the syllabus, try starting Lab 1 as soon as you can. This will require you to install R and RStudio and will help get you get acquainted with R. See the software page for more information about the software we will use for this course.\n\nI am looking forward to getting to know everyone and a fantastic semester! Good luck!"
