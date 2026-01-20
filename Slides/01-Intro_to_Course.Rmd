@@ -233,26 +233,11 @@ The goal of this course is for *you to develop the foundation knowledge and skil
 ---
 # Communication
 
-.pull-left[
-
 * Email: [jason.bryer@yu.edu](mailto:jason.bryer@yu.edu).
 
 * Canvas
 
 * Office hours before and after class and by appointment.
-
-* Slack `r slack_link`
-
-]
-.pull-right[
-
-Scan this QR code to join the Slack workspace:
-
-```{r, echo=FALSE, fig.width=5, fig.height=5}
-qrcode::qr_code(slack_invite) |> plot(col = c('#FAFAFA', 'black'))
-```
-
-]
 
 
 ---
