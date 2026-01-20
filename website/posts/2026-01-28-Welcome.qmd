@@ -10,7 +10,7 @@ description: "Important information on how to get started with this course. Plea
 source('../../config.R')
 ```
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, include=FALSE}
 meetup_image(out_file = 'welcome.png',
 			 title = 'Welcome to DAV 5300!',
 			 date = ' ')
