@@ -16,6 +16,8 @@ remotes::install_github("gadenbuie/ggweekly")
 remotes::install_github("jhelvy/renderthis")
 remotes::install_github('rstudio/chromote')
 
+
+##### Load Configuration #######################################################
 source('config.R')
 
 ##### Setting up the Github repo ###############################################
