@@ -73,8 +73,8 @@ class: font120
 * Principal Investigator for a Department of Education Grant to develop and test the Diagnostic Assessment and Achievement of College Skills ([www.DAACS.net](http://www.daacs.net))  
 * Authored over a dozen R packages including:
 	* [likert](http://github.com/jbryer/likert)
-	* [sqlutils](http://github.com/jbryer/sqlutils)
-	* [timeline](http://github.com/jbryer/timeline)
+	* [clav](http://github.com/jbryer/clav)
+	* [VisualStats](http://github.com/jbryer/VisualStats)
 * Specialize in propensity score methods. Three new methods/R packages developed include:
 	* [multilevelPSA](http://github.com/jbryer/multilevelPSA)
 	* [TriMatch](http://github.com/jbryer/TriMatch)
@@ -109,8 +109,6 @@ knitr::include_graphics('images/Sleeping_Empire.jpg')
 # Your turn...
 
 What is your name?
-
-What program are you in?
 
 What are your career goals?
 
@@ -206,7 +204,7 @@ class: font90
 
 **Final exam** (20%) - A multiple choice exam will be given on the last day of class.
 
-**All assignments are due on Monday.** Assignments submitted late will be penalized. Assignments will not be accepted more than one week after their due date.
+**All assignments are due on Tuesday.** Assignments submitted late will be penalized. Assignments will not be accepted more than two weeks after their due date.
 
 ---
 # Academic Integrity
@@ -222,7 +220,7 @@ The submission by a student of any examination, course assignment, or degree req
 
 First, AI is a marketing term. I prefer to be more specific regarding what we are doing:
 
-1. Machine Learning (ML) - This course, along with IS382, will provide the foundations for how ML algorithms work. Generally speaking, the goal is to predict some known (and sometimes unknown in the case of unsupervised learning models) outcome.
+1. Machine Learning (ML) - This course will provide the foundations for how ML algorithms work. Generally speaking, the goal is to predict some known (and sometimes unknown in the case of unsupervised learning models) outcome.
 
 2. Large Language Models (LLM) - This is often what people mean when they say AI. This includes producsts like ChatGPT, Antrhopic, Google Gemini, etc. LLMs generate text, images, videos, etc. from a prompt.
 
@@ -246,7 +244,7 @@ The goal of this course is for *you to develop the foundation knowledge and skil
 ```{r, echo = FALSE, cache = FALSE, message = FALSE, warning = FALSE}
 library(googlesheets4)
 
-results <- googlesheets4::read_sheet(formative_assessmnet_results) %>% as.data.frame()
+results <- googlesheets4::read_sheet(formative_assessmnet_results) |> as.data.frame()
 mass.items <- c('I find math interesting.',
 				'I get uptight during math tests.',
 				'I think that I will use math in the future.',
@@ -302,14 +300,14 @@ names(stats.results) <- stats.items
 
 
 ```{r, fig.width=12, fig.align='center'}
-likert(stats.results) %>% plot(center = 2.5)
+likert(stats.results) |> plot(center = 2.5)
 ```
 
 ---
 # Math Anxiety Survey Scale `r hexes(c('googlesheets4','likert'))`
 
 ```{r, fig.width = 12, fig.align='center'}
-likert(mass.results) %>% plot()
+likert(mass.results) |> plot()
 ```
 
 
@@ -467,21 +465,14 @@ class: hide-logo
 .font60[
 
 ```{r eval=require('DT'), echo=FALSE, tidy=FALSE}
-legosets %>%
-	sample_n(100) %>% 
-	select(setID, name, year, theme, themeGroup, category, US_retailPrice, pieces, minifigs, rating) %>%
+legosets |>
+	sample_n(100) |> 
+	select(setID, name, year, theme, themeGroup, category, US_retailPrice, pieces, minifigs, rating) |>
 	DT::datatable(fillContainer = FALSE, options = list(pageLength = 10))
 ```
 
 ]
 
-
----
-# Data Wrangling Cheat Sheet `r hexes(c('dplyr'))`
-
-.center[
-<a href='https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf' target='_new'><img src='images/data-transformation.png' width='700' /></a>
-]
 
 
 ---
@@ -489,6 +480,13 @@ legosets %>%
 
 .center[
 <a href='images/R_Syntax_Comparison.jpeg' target='_new'><img src="images/R_Syntax_Comparison.jpeg" width='700' /></a>
+]
+
+---
+# Data Wrangling Cheat Sheet `r hexes(c('dplyr'))`
+
+.center[
+<a href='https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf' target='_new'><img src='images/data-transformation.png' width='700' /></a>
 ]
 
 
@@ -519,7 +517,7 @@ prop.table(table(legosets$category))
 Using the pipe (`|>`) operator we can chain these calls in a what is arguably a more readable format:
 
 ```{r, eval=FALSE}
-table(legosets$category) |> prop.table()
+legosets$category |> table() |> prop.table()
 ```
 ]
 
@@ -547,12 +545,39 @@ table(legosets$category) |> prop.table()
 * `a < b` - TRUE if a is smaller than be, but not equal
 * `a <= b` - TRUE if a is smaller or equal to b
 * `a %in% b` - TRUE if a is in b where b is a vector  
-```{r}
-letters %in% c('a','e','i','o','u') |> which()
-```
 * `a | b` - TRUE if a *or* b are TRUE
 * `a & b` - TRUE if a *and* b are TRUE
 * `isTRUE(a)` - TRUE if a is TRUE
+
+---
+class: font90
+# `%in%` operator
+
+```{r, include=FALSE}
+options(width = 100)
+```
+
+```{r}
+vowels <- c('a', 'e', 'i', 'o', 'u')
+```
+
+
+```{r}
+letters %in% vowels
+```
+
+Which is equivalent to doing a bunch of or statements.
+
+```{r}
+letters == 'a' | letters == 'e' | letters == 'i' | letters == 'o' | letters == 'u'
+```
+
+We can use the `which()` function to determine the position of `TRUE`s.
+
+```{r}
+letters %in% vowels |> which()
+```
+
 
 ---
 # Filter `r hexes(c('dplyr','tidyverse'))`
@@ -560,7 +585,7 @@ letters %in% c('a','e','i','o','u') |> which()
 ### `dplyr`
 
 ```{r}
-mylego <- legosets %>% filter(themeGroup == 'Educational' & year > 2015)
+mylego <- legosets |> filter(themeGroup == 'Educational' & year > 2015)
 ```
 
 ### Base R
@@ -581,7 +606,7 @@ nrow(mylego)
 ### `dplyr`
 
 ```{r}
-mylego <- mylego %>% select(setID, pieces, theme, availability, US_retailPrice, minifigs)
+mylego <- mylego |> select(setID, pieces, theme, availability, US_retailPrice, minifigs)
 ```
 
 ### Base R
@@ -609,7 +634,7 @@ head(mylego, n = 4)
 ### `dplyr`
 
 ```{r}
-mylego %>% relocate(where(is.numeric), .after = where(is.character)) %>% head(n = 3)
+mylego |> relocate(where(is.numeric), .after = where(is.character)) |> head(n = 3)
 ```
 
 ### Base R
@@ -633,7 +658,7 @@ head(mylego2, n = 3)
 ### `dplyr`
 
 ```{r}
-mylego %>% dplyr::rename(USD = US_retailPrice) %>% head(n = 3)
+mylego |> dplyr::rename(USD = US_retailPrice) |> head(n = 3)
 ```
 
 ### Base R
@@ -656,8 +681,8 @@ head(mylego2, n = 3)
 ### `dplyr`
 
 ```{r}
-mylego %>% filter(!is.na(pieces) & !is.na(US_retailPrice)) %>% 
-	mutate(Price_per_piece = US_retailPrice / pieces) %>% head(n = 3)
+mylego |> filter(!is.na(pieces) & !is.na(US_retailPrice)) |> 
+	mutate(Price_per_piece = US_retailPrice / pieces) |> head(n = 3)
 ```
 
 ### Base R
@@ -674,7 +699,7 @@ head(mylego2, n = 3)
 
 .code80[
 ```{r}
-legosets %>% group_by(themeGroup) %>% summarize(mean_price = mean(US_retailPrice, na.rm = TRUE),
+legosets |> group_by(themeGroup) |> summarize(mean_price = mean(US_retailPrice, na.rm = TRUE),
 												sd_price = sd(US_retailPrice, na.rm = TRUE),
 												median_price = median(US_retailPrice, na.rm = TRUE),
 												n = n(),
