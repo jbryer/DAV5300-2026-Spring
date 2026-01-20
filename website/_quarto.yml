@@ -16,11 +16,11 @@ website:
   #   type: primary # primary, secondary, success, danger, warning, info, light, dark
 
   page-navigation: true
-  title: "DAV 5300 Fall 2025"
+  title: "DAV 5300 Spring 2026"
   description: "DAV5300 - Computational Math and Statistics - Yeshiva University"
-  site-url: "https://fall2025.dav5300.net/"
+  site-url: "https://spring2026.dav5300.net/"
 
-  repo-url: https://github.com/jbryer/DAV5300-2025-Fall/
+  repo-url: https://github.com/jbryer/DAV5300-2026-Spring/
   repo-subdir: website
   repo-branch: master
   repo-actions: [edit, issue]
@@ -29,7 +29,7 @@ website:
 
   page-footer:
     # right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
-    # left: "&copy; Copyright 2024, Jason Bryer"
+    # left: "&copy; Copyright 2026, Jason Bryer"
     background: "#b4c8e0"
 
   sidebar:
@@ -47,9 +47,9 @@ website:
         href: https://github.com/jbryer/DAV5300-2025-Fall
         text: "Github"
         target: _blank
-      - icon: slack
-        href: https://dav5300fall2025.slack.com
-        text: "Slack"
+      # - icon: slack
+      #   href: https://dav5300fall2025.slack.com
+      #   text: "Slack"
       - icon: link-45deg
         text: "Yeshiva University"
         menu:
