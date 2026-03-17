@@ -827,10 +827,11 @@ $H_A$: at least one mean is different from the others.
 
 ```{r}
 results_url <- 'https://docs.google.com/spreadsheets/d/1lAOM-wRsbD1z38jcc2yN6T4p1Qo13dCQlJcLGMM-yJk/edit?resourcekey&usp=forms_web_b&urp=linked#gid=1432388966'
-results <- read_sheet(results_url)
-results_melt <- results |>	reshape2::melt(id.vars = 'Timestamp') |> rename(color = variable)
+results <- googlesheets4::read_sheet(results_url)
+results <- results |> dplyr::filter(Timestamp >= as.POSIXct('2026-03-10 8:00:00'))
+results_melt <- results |>	reshape2::melt(id.vars = 'Timestamp') |> dplyr::rename(color = variable)
 tab <- psych::describeBy(results_melt$value, group = results_melt$color, mat = TRUE, skew = FALSE) |>
-	rename(color = group1)
+	dplyr::rename(color = group1)
 tab
 ```
 
