@@ -306,7 +306,7 @@ optim.rss$par
 ```
 
 ```
-## [1] 37.285132 -5.344473
+## [1] 37.285114 -5.344469
 ```
 
 --
@@ -377,7 +377,7 @@ loglikelihood &lt;- function(parameters, predictor, outcome) {
 	a &lt;- parameters[1]     # intercept
 	b &lt;- parameters[2]     # slope / beta coefficient
 	sigma &lt;- parameters[3] # error
-	ll.vec &lt;- dnorm(outcome, a + b * predictor, sigma, log = TRUE)
+	ll.vec &lt;- dnorm(outcome, mean = a + b * predictor, sd = sigma, log = TRUE)
 	return(sum(ll.vec))
 }
 ```
@@ -427,7 +427,7 @@ optim.ll$par[1:2]
 ```
 
 ```
-## [1] 37.284747 -5.344362
+## [1] 37.28512 -5.34447
 ```
 
 ``` r
@@ -499,7 +499,7 @@ optim.ll$par[3]
 ```
 
 ```
-## [1] 2.949175
+## [1] 2.949163
 ```
 
 ``` r

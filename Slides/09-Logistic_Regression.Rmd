@@ -450,7 +450,7 @@ loglikelihood <- function(parameters, predictor, outcome) {
 	a <- parameters[1]     # intercept
 	b <- parameters[2]     # slope / beta coefficient
 	sigma <- parameters[3] # error
-	ll.vec <- dnorm(outcome, a + b * predictor, sigma, log = TRUE)
+	ll.vec <- dnorm(outcome, mean = a + b * predictor, sd = sigma, log = TRUE)
 	return(sum(ll.vec))
 }
 ```
