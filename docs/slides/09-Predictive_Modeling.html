@@ -31,11 +31,11 @@ class: center, middle, inverse, title-slide
 
 .pull-left[
 **What was the most important thing you learned during this class?**
-
+&lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-2-1.png" alt="" style="display: block; margin: auto;" /&gt;
 ]
 .pull-right[
 **What important question remains unanswered for you?**
-
+&lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-3-1.png" alt="" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -271,20 +271,16 @@ Predicting who survived the Titanic.
 ##       * denotes terminal node
 ## 
 ##  1) root 981 231.6514000 0.38226300  
-##    2) sex=male 644 106.1180000 0.20807450  
-##      4) pclass&gt;=1.5 497  65.7585500 0.15694160  
-##        8) age&gt;=3.5 483  58.4265000 0.14078670 *
-##        9) age&lt; 3.5 14   2.8571430 0.71428570 *
-##      5) pclass&lt; 1.5 147  34.6666700 0.38095240  
-##       10) age&gt;=37.5 82  16.0975600 0.26829270 *
-##       11) age&lt; 37.5 65  16.2153800 0.52307690 *
-##    3) sex=female 337  68.6528200 0.71513350  
-##      6) pclass&gt;=2.5 153  38.0522900 0.46405230  
-##       12) age&gt;=27.5 37   6.2702700 0.21621620 *
-##       13) age&lt; 27.5 116  28.7844800 0.54310340  
-##         26) sibsp&gt;=2.5 12   0.9166667 0.08333333 *
-##         27) sibsp&lt; 2.5 104  25.0384600 0.59615380 *
-##      7) pclass&lt; 2.5 184  12.9347800 0.92391300 *
+##    2) sex=male 622  94.9919600 0.18810290  
+##      4) age&gt;=9.5 569  77.1247800 0.16168720  
+##        8) pclass&gt;=1.5 441  45.8684800 0.11791380 *
+##        9) pclass&lt; 1.5 128  27.5000000 0.31250000 *
+##      5) age&lt; 9.5 53  13.2075500 0.47169810  
+##       10) sibsp&gt;=2.5 13   0.9230769 0.07692308 *
+##       11) sibsp&lt; 2.5 40   9.6000000 0.60000000 *
+##    3) sex=female 359  72.5849600 0.71866300  
+##      6) pclass&gt;=2.5 170  42.4764700 0.48823530 *
+##      7) pclass&lt; 2.5 189  12.9629600 0.92592590 *
 ```
 
 ---
@@ -307,34 +303,31 @@ plot(titanic.rpart); text(titanic.rpart, use.n=TRUE, cex=1)
 
 ```
 ## 
-## 	 Conditional inference tree with 8 terminal nodes
+## 	 Conditional inference tree with 7 terminal nodes
 ## 
 ## Response:  survived 
 ## Inputs:  pclass, sex, age, sibsp 
 ## Number of observations:  981 
 ## 
-## 1) sex == {female}; criterion = 1, statistic = 240.633
-##   2) pclass &lt;= 2; criterion = 1, statistic = 80.032
-##     3)*  weights = 184 
+## 1) sex == {female}; criterion = 1, statistic = 271.067
+##   2) pclass &lt;= 2; criterion = 1, statistic = 81.741
+##     3) pclass &lt;= 1; criterion = 0.98, statistic = 7.833
+##       4)*  weights = 108 
+##     3) pclass &gt; 1
+##       5)*  weights = 81 
 ##   2) pclass &gt; 2
-##     4) sibsp &lt;= 2; criterion = 0.966, statistic = 6.884
-##       5) age &lt;= 27; criterion = 0.996, statistic = 10.801
-##         6)*  weights = 104 
-##       5) age &gt; 27
-##         7)*  weights = 34 
-##     4) sibsp &gt; 2
-##       8)*  weights = 15 
+##     6)*  weights = 170 
 ## 1) sex == {male}
-##   9) pclass &lt;= 1; criterion = 1, statistic = 26.46
-##     10) age &lt;= 37; criterion = 0.986, statistic = 8.581
-##       11)*  weights = 65 
-##     10) age &gt; 37
-##       12)*  weights = 82 
-##   9) pclass &gt; 1
-##     13) age &lt;= 3; criterion = 0.999, statistic = 13.376
-##       14)*  weights = 14 
-##     13) age &gt; 3
-##       15)*  weights = 483
+##   7) pclass &lt;= 1; criterion = 1, statistic = 17.994
+##     8)*  weights = 140 
+##   7) pclass &gt; 1
+##     9) age &lt;= 9; criterion = 1, statistic = 17.297
+##       10) sibsp &lt;= 2; criterion = 0.998, statistic = 12.345
+##         11)*  weights = 28 
+##       10) sibsp &gt; 2
+##         12)*  weights = 13 
+##     9) age &gt; 9
+##       13)*  weights = 441
 ```
 
 ---
@@ -769,11 +762,40 @@ plot(roc, curve = 'accuracy')
 
 
 ``` r
-plot(roc)
+plot(roc, curve = 'cost')
 ```
 
 &lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-31-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
+---
+# ROC Curve (false-negative up-weighted)
+
+.pull-left[
+
+``` r
+roc2 &lt;- calculate_roc(
+	heart_train$prediction, 
+	heart_train$num == 1,
+	cost_of_fn = 2,
+	cost_of_fp = 1)
+summary(roc2)
+```
+
+```
+## AUC = 0.908
+## Cost of false-positive = 1
+## Cost of false-negative = 2
+## Threshold with minimum cost = 0.313
+```
+]
+.pull-right[
+
+``` r
+plot(roc2, curve = 'cost')
+```
+
+&lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-33-1.png" alt="" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 class: font90
@@ -826,7 +848,7 @@ psranges2 &lt;- psrange(test.df2, test.df2$treat, treat ~ .,
 plot(psranges2)
 ```
 
-&lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-35-1.png" alt="" style="display: block; margin: auto;" /&gt;
+&lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-37-1.png" alt="" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -839,7 +861,7 @@ class: left, font140
 2. What important question remains unanswered for you?
 ]
 .pull-right[
-&lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-36-1.png" alt="" style="display: block; margin: auto;" /&gt;
+&lt;img src="09-Predictive_Modeling_files/figure-html/unnamed-chunk-38-1.png" alt="" style="display: block; margin: auto;" /&gt;
 ]
 
 https://forms.gle/hWUktVZ4Fyiia3xy6
